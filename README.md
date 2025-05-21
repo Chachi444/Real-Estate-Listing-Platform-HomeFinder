@@ -1,16 +1,41 @@
-# Milestone 1: Roles & Property Listings
+#  Real Estate Listing Platform (HomeFinder)
 
-## 1.Setup user roles: agent and regular user.
+## Backend for listing and saving real estate properties. 
 
-## 2.Agents can add new property listings.
+## Main Features: 
+- Agent/user roles 
+- Property listings by agents 
+- Users browse/save listings 
 
-## 3.Define schemas: User, Property.# Real-Estate-Listing-Platform-HomeFinder
+## Schemas: 
+1. User info + role 
+2. Property title, price, location, agent 
+3. SavedProperty user, property 
+
+## Endpoints: 
+- POST /auth/register 
+- POST /auth/login 
+- POST /properties (agent) 
+- GET /properties 
+- GET /properties/:id 
+- POST /saved 
+- GET /saved 
+4 
 
 
-# Milestone 2: Browsing & Saving Properties
+## Milestone 1: Roles & Property Listings
 
-## 1.Users can view all listings or a specific one.
+### 1.Setup user roles: agent and regular user.
 
-## 2.Create SavedProperty schema and endpoint.
+### 2.Agents can add new property listings.
 
-## 3.Allow users to save/unsave properties.
+### 3.Define schemas: User, Property.
+
+
+## Milestone 2: Browsing & Saving Properties
+
+### 1.Users can view all listings or a specific one.
+
+### 2.Create SavedProperty schema and endpoint.
+
+### 3.Allow users to save/unsave properties.
