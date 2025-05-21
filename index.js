@@ -6,8 +6,7 @@ const Property = require("./propertyModel");
 dotenv.config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const SavedProperty = require("./savedProperties");
-SavedProperty
+const SavedProperty = require("./savedPropertiesModel");
 
 const app = express();
 app.use(express.json());
@@ -46,7 +45,6 @@ app.get("/", (req, res) => {
 });
 
 //USER
-
 
 // Register route
 app.post("/register", async (req, res) => {
@@ -414,7 +412,7 @@ app.get("/property/:id", async (req, res) => {
   }
 });
 
-//saved properties
+
 // Save a property
 app.post("/save-property/:propertyId", authenticateToken, async (req, res) => {
   try {
@@ -470,7 +468,6 @@ app.post("/save-property/:propertyId", authenticateToken, async (req, res) => {
   }
 });
 
-//saved properties
 // Get all saved properties for a user
 app.get("/saved-properties", authenticateToken, async (req, res) => {
   try {
@@ -482,3 +479,78 @@ app.get("/saved-properties", authenticateToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Get a single saved property by ID
+app.get("/saved-property/:id", authenticateToken, async (req, res) => {
+  try {
+    const savedProperty = await SavedProperty.findById(req.params.id)
+      .populate("property")
+      .exec();
+    if (!savedProperty) {
+      return res.status(404).json({ error: "Saved property not found" });
+    }
+    res.status(200).json(savedProperty);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//remove saved property
+app.delete(
+  "/remove-saved-property/:id",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const savedProperty = await SavedProperty.findByIdAndDelete(
+        req.params.id
+      );
+      if (!savedProperty) {
+        return res.status(404).json({ error: "Saved property not found" });
+      }
+      res.status(200).json({ message: "Saved property removed successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+// Update a saved property
+app.put(
+  "/update-saved-property/:id",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { notes, isFavorite } = req.body;
+
+      // Validate notes
+      if (notes && typeof notes !== "string") {
+        return res.status(400).json({ error: "Notes must be a string." });
+      }
+      if (notes && notes.length > 500) {
+        return res
+          .status(400)
+          .json({ error: "Notes must not exceed 500 characters." });
+      }
+
+      // Validate isFavorite
+      if (isFavorite !== undefined && typeof isFavorite !== "boolean") {
+        return res.status(400).json({ error: "isFavorite must be a boolean." });
+      }
+
+      const savedProperty = await SavedProperty.findByIdAndUpdate(
+        req.params.id,
+        { notes, isFavorite },
+        { new: true }
+      ).populate("property");
+
+      if (!savedProperty) {
+        return res.status(404).json({ error: "Saved property not found" });
+      }
+
+      res.status(200).json(savedProperty);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
