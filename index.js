@@ -364,6 +364,7 @@ app.post("/create-property", authenticateToken, async (req, res) => {
     const userId = req.user.id;
 
     // Check if the user exists and is an agent
+    // 2. Enforce permissions: only agents can create.
     const agent = await Auth.findById(userId);
     if (!agent) {
       return res.status(404).json({ error: "Agent not found." });
@@ -414,6 +415,7 @@ app.get("/property/:id", async (req, res) => {
 
 
 // Save a property
+// 1. GET saved listings for a user.
 app.post("/save-property/:propertyId", authenticateToken, async (req, res) => {
   try {
     const { propertyId } = req.params;
@@ -553,4 +555,32 @@ app.put(
     }
   }
 );
+
+
+// Add property filters
+// 3. Add property filters (optional).
+
+app.get("/properties/filter", async (req, res) => {
+  try {
+    const { priceRange, propertyType, location } = req.query;
+
+    const filters = {};
+    if (priceRange) {
+      const [minPrice, maxPrice] = priceRange.split(",").map(Number);
+      filters.price = { $gte: minPrice, $lte: maxPrice };
+    }
+    if (propertyType) {
+      filters.propertyType = propertyType;
+    }
+    if (location) {
+      filters.location = new RegExp(location, "i"); // Case-insensitive search
+    }
+
+    const properties = await Property.find(filters);
+    res.status(200).json(properties);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 

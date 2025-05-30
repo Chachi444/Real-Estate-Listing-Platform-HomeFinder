@@ -20,22 +20,30 @@
 - GET /properties/:id 
 - POST /saved 
 - GET /saved 
-4 
 
 
 ## Milestone 1: Roles & Property Listings
 
-### 1.Setup user roles: agent and regular user.
+> ### 1. Setup user roles: agent and regular user.
 
-### 2.Agents can add new property listings.
+> ### 2. Agents can add new property listings.
 
-### 3.Define schemas: User, Property.
+> ### 3. Define schemas: User, Property.
 
 
 ## Milestone 2: Browsing & Saving Properties
 
-### 1.Users can view all listings or a specific one.
+> ### 1. Users can view all listings or a specific one.
 
-### 2.Create SavedProperty schema and endpoint.
+> ### 2. Create SavedProperty schema and endpoint.
 
-### 3.Allow users to save/unsave properties.
+> ### 3. Allow users to save/unsave properties.
+
+
+## Milestone 3: Data Fetching & Permissions
+
+> ### 1. GET saved listings for a user.
+
+> ### 2. Enforce permissions: only agents can create.
+
+> ### 3. Add property filters (optional).
