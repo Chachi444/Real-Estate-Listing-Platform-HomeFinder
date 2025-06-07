@@ -22,9 +22,3 @@ router.get("/properties/filter", propertyFilter);
 
 module.exports = router;
 
-feat: add middleware imports and apply validation and authorization to auth routes
-
-- Imported validateRegistration and authorization middleware from Middleware directory
-- Applied validateRegistration to registration route
-- Applied authorization to login route
-- Ensured all routes are properly structured and exported
